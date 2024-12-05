@@ -11,11 +11,10 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs
   claimRef:
-    namespace: app-launcher
+    apiVersion: v1
+    kind: PersistentVolumeClaim
     name: static-assets-pvc
-  mountOptions:
-    - hard
-    - nfsvers=4.1
+    namespace: app-launcher
   nfs:
     path: /opt/cnsd-tools/assets
     server: 10.9.9.23
