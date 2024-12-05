@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: static-assets-nfs
+  namespace: app-launcher
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs
+  claimRef:
+    namespace: app-launcher
+    name: static-assets-pvc
+  mountOptions:
+    - hard
+    - nfsvers=4.1
+  nfs:
+    path: /opt/cnsd-tools/assets
+    server: 10.9.9.23

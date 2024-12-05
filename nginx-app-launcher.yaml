@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-launcher
+  namespace: app-launcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-launcher
+  template:
+    metadata:
+      labels:
+        app: app-launcher
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: ssl-certs
+          mountPath: /etc/nginx/ssl
+          readOnly: true
+        - name: html
+          mountPath: /usr/share/nginx/html
+        - name: static-assets-volume
+          mountPath: /usr/share/nginx/html/assets
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: html
+        configMap:
+          name: app-launcher-html
+      - name: static-assets-volume
+        persistentVolumeClaim:
+          claimName: static-assets-pvc
+      - name: nginx-conf
+        persistentVolumeClaim:
+          claimName: nginx-conf-pvc
+      - name: ssl-certs
+        secret:
+          secretName: app-tls

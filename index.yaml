@@ -1,0 +1,149 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-launcher-html
+  namespace: app-launcher
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CNSD - Admin tools</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background: #f0f0f0;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: #333;
+            }
+            .header {
+                margin-bottom: 20px;
+            }
+            .header h1 {
+                font-size: 2.5em;
+                margin: 0;
+                color: #1a1a1a;
+            }
+            .search-container {
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                max-width: 600px;
+                margin-bottom: 40px;
+            }
+            .search-bar {
+                width: 100%;
+                display: flex;
+                border-radius: 50px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+            .search-bar input[type="text"] {
+                flex: 1;
+                border: none;
+                padding: 10px 20px;
+                font-size: 1em;
+                border-radius: 50px 0 0 50px;
+                outline: none;
+            }
+            .search-bar button {
+                border: none;
+                background-color: #0079d3;
+                color: #fff;
+                padding: 10px 20px;
+                font-size: 1em;
+                border-radius: 0 50px 50px 0;
+                cursor: pointer;
+            }
+            .search-bar button:hover {
+                background-color: #005f8d;
+            }
+            .app-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 20px;
+                justify-content: center;
+                width: 100%;
+                max-width: 800px;
+            }
+            .app-icon {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                width: 120px;
+                height: 120px;
+                background-color: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                text-decoration: none;
+                color: #333;
+                transition: background-color 0.3s;
+            }
+            .app-icon img {
+                width: 80px;
+                height: 80px;
+            }
+            .app-icon:hover {
+                background-color: #e8e8e8;
+            }
+            .app-title {
+                margin-top: 10px;
+                font-size: 1em;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>CNSD - Admin tools</h1>
+        </div>
+        <div class="search-container">
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search apps..." onkeyup="filterApps()">
+                <button type="button" onclick="filterApps()">Search</button>
+            </div>
+        </div>
+        <div class="app-grid" id="app-grid">
+            <a href="https://harbor.cnsd.gob.pe/" class="app-icon" data-title="Harbor" target="_blank" title="Harbor">
+                <img src="assets/images/harbor.png" alt="Harbor">
+                <div class="app-title">Harbor</div>
+            </a>
+            <a href="https://grafana.cnsd.gob.pe/" class="app-icon" data-title="Grafana" target="_blank" title="Grafana">
+                <img src="assets/images/grafana.png" alt="Grafana">
+                <div class="app-title">Grafana</div>
+            </a>
+            <a href="https://gitlab.cnsd.gob.pe/" class="app-icon" data-title="GitLab" target="_blank" title="GitLab">
+                <img src="assets/images/gitlab.png" alt="GitLab">
+                <div class="app-title">GitLab</div>
+            </a>
+            <a href="https://minio.cnsd.gob.pe/" class="app-icon" data-title="Minio" target="_blank" title="Minio">
+                <img src="assets/images/minio.png" alt="Minio">
+                <div class="app-title">Minio</div>
+            </a>
+        </div>
+
+        <script>
+            function filterApps() {
+                const input = document.getElementById('search-input').value.toLowerCase();
+                const appIcons = document.querySelectorAll('.app-icon');
+                appIcons.forEach(icon => {
+                    const title = icon.getAttribute('data-title').toLowerCase();
+                    if (title.includes(input)) {
+                        icon.style.display = 'flex';
+                    } else {
+                        icon.style.display = 'none';
+                    }
+                });
+            }
+        </script>
+    </body>
+    </html>
+

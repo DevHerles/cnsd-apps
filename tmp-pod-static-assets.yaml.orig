@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: upload-static-assets
+  namespace: app-launcher
+spec:
+  containers:
+    - name: uploader
+      image: busybox
+      command: ["sleep", "3600"]
+      volumeMounts:
+        - name: static-assets-volume
+          mountPath: /mnt/data
+  volumes:
+    - name: static-assets-volume
+      persistentVolumeClaim:
+        claimName: static-assets-pvc
+
